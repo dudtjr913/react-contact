@@ -15,46 +15,47 @@ export default class ContactCreate extends React.Component {
     this.setState(contactObj);
   };
 
-  handleClick = () => {
-    const contact = {
+  handleOnCreate = () => {
+    this.props.onCreate({
       name: this.state.name,
       phone: this.state.phone,
-    };
-    this.props.onCreate(contact);
+    });
     this.setState({
       name: "",
       phone: "",
     });
+    this.nameInput.focus();
+  };
+
+  handleEnter = (event) => {
+    if (event.charCode === 13) {
+      this.handleOnCreate();
+    }
   };
 
   render() {
     return (
       <div>
-        <div>
-          <h1>Create</h1>
-          <input
-            name="name"
-            placeholder="write name"
-            type="text"
-            value={this.state.name}
-            onChange={this.handleOnChange}
-          />
-          <input
-            name="phone"
-            placeholder="write phone-number"
-            type="text"
-            value={this.state.phone}
-            onChange={this.handleOnChange}
-          />
-        </div>
-        <button onClick={this.handleClick}>Create</button>
+        <h1>Create</h1>
+        <input
+          name="name"
+          placeholder="name"
+          type="text"
+          value={this.state.name}
+          onChange={this.handleOnChange}
+          ref={(ref) => (this.nameInput = ref)}
+        />
+        <input
+          name="phone"
+          placeholder="phone"
+          type="text"
+          value={this.state.phone}
+          onChange={this.handleOnChange}
+          onKeyPress={this.handleEnter}
+        />
+        <p></p>
+        <button onClick={this.handleOnCreate}>Create</button>
       </div>
     );
   }
 }
-
-ContactCreate.defaultProps = {
-  onCreate: () => {
-    console.error("not create");
-  },
-};

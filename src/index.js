@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import ContactApp from "./contactApp.js";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ContactApp />
   </React.StrictMode>,
   document.getElementById("root")
 );
