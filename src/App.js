@@ -1,6 +1,8 @@
 import React from "react";
 import Contact from "./contact.js";
 import Detail from "./detail.js";
+import ContactCreate from "./contactCreate.js";
+import update from "react-addons-update";
 
 class App extends React.Component {
   constructor(props) {
@@ -26,6 +28,36 @@ class App extends React.Component {
   contactClick = (key) => {
     this.setState({
       selectedKey: key,
+    });
+  };
+
+  contactCreate = (contact) => {
+    this.setState({
+      contact: update(this.state.contact, {
+        $push: [contact],
+      }),
+    });
+  };
+
+  contactRemove = () => {
+    if (this.state.selectedKey >= 0) {
+      this.setState({
+        contact: update(this.state.contact, {
+          $splice: [[this.state.selectedKey, 1]],
+        }),
+        selectedKey: -1,
+      });
+    }
+  };
+
+  contactEdit = (name, phone) => {
+    this.setState({
+      contact: update(this.state.contact, {
+        [this.state.selectedKey]: {
+          name: { $set: name },
+          phone: { $set: phone },
+        },
+      }),
     });
   };
 
@@ -66,7 +98,12 @@ class App extends React.Component {
           <Detail
             isSelected={this.state.selectedKey !== -1}
             contact={this.state.contact[this.state.selectedKey]}
+            onRemove={this.contactRemove}
+            onEdit={this.contactEdit}
           />
+        </section>
+        <section>
+          <ContactCreate onCreate={this.contactCreate} />
         </section>
       </div>
     );
